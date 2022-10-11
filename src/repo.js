@@ -20,6 +20,11 @@ if (metaTag != undefined) {
 
             let userUrlList = urlMap.get(watcher);
             userUrlList = userUrlList != undefined ? userUrlList : [];
+            for (let i=0; i<userUrlList.length; i++) {
+                if (userUrlList[i].user == user && userUrlList[i].repo == repo) {
+                    userUrlList.splice(i, 1);
+                }
+            }
             userUrlList.unshift({
                 user: user,
                 repo: repo,

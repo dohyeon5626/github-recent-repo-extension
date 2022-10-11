@@ -1,5 +1,3 @@
-let metaTag = document.querySelector("meta[name=octolytics-actor-login]");
-
 let getRepoTag = (user, repo, repoDescription, repoLanguageColor, repoLanguage, repoStarAmount) => {
     let descriptionTag = "";
     if (repoDescription != undefined) {
@@ -23,12 +21,12 @@ let getRepoTag = (user, repo, repoDescription, repoLanguageColor, repoLanguage, 
     }
 
     return `
-    <div class="border-bottom py-3">
+    <div id="box-${user}-${repo}" class="py-2">
         <div class="Box p-3">
             <div>
                 <div class="f4 lh-condensed text-bold color-fg-default">
                     <a class="Link--primary text-bold no-underline wb-break-all d-inline-block" href="/${user}/${repo}">${user}/${repo}</a>
-                    <button class="d-flex BtnGroup float-right js-toggler-container SelectMenu-closeButton js-social-container" type="button" aria-label="Close menu">
+                    <button id="delete-${user}-${repo}" class="d-flex BtnGroup float-right js-toggler-container SelectMenu-closeButton js-social-container" type="button" aria-label="Close menu">
                         <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-x">
                             <path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"></path>
                         </svg>
@@ -52,6 +50,7 @@ let getRepoTag = (user, repo, repoDescription, repoLanguageColor, repoLanguage, 
     `;
 }
 
+let metaTag = document.querySelector("meta[name=octolytics-actor-login]");
 if (metaTag != undefined) {
     let li = document.createElement('li');
     li.setAttribute("role", "presentation");
@@ -83,14 +82,14 @@ if (metaTag != undefined) {
     li.setAttribute("data-view-component", "true");
 
     let watcher = metaTag.content;
-    chrome.storage.sync.get(['history'], function(result) {
+    chrome.storage.sync.get(['history'], (result) => {
         let urlMap = result.history != undefined ? new Map(Object.entries(result.history)) : new Map();
         let userUrlList = urlMap.get(watcher);
         userUrlList = userUrlList != undefined ? userUrlList : [];
 
         if (userUrlList != undefined && userUrlList.length != 0) {
             let listHtml = `
-            <div class="d-flex flex-items-baseline" style="padding-top:16px; justify-content: space-between">
+            <div id="date-clear-box" class="d-flex flex-items-baseline" style="padding-top:16px; padding-bottom:8px; justify-content: space-between">
                 <div style="disply: inline">
                     Updated on
                     <b>${
@@ -102,7 +101,7 @@ if (metaTag != undefined) {
                         })
                     }</b>
                 </div>
-                <button class="btn btn-sm ml-2 btn-danger">clear</button>
+                <button id="clear-button" class="btn btn-sm ml-2 btn-danger">clear</button>
             </div>
             `;
 
@@ -117,6 +116,34 @@ if (metaTag != undefined) {
             }
             panel.innerHTML = listHtml;
             document.querySelector("tab-container").appendChild(panel);
+            document.getElementById("clear-button").onclick = () => {
+                chrome.storage.sync.get(['history'], (result) => {
+                    let keys = Object.keys(result);
+                    chrome.storage.sync.remove(keys, () => {
+                        panel.innerHTML = "";
+                    });
+                });
+            };
+            for (let i=0; i<userUrlList.length; i++) {
+                let user = userUrlList[i].user;
+                let repo = userUrlList[i].repo;
+                document.getElementById("delete-" + user + "-" + repo).onclick = () => {
+                    chrome.storage.sync.get(['history'], function(result) {
+                        let urlMap = result.history != undefined ? new Map(Object.entries(result.history)) : new Map();
+            
+                        let userUrlList = urlMap.get(watcher);
+                        userUrlList.splice(i, 1);
+                        urlMap.set(watcher, userUrlList);
+            
+                        chrome.storage.sync.set({history: Object.fromEntries(urlMap)}, () => {
+                            document.getElementById("box-" + user + "-" + repo).replaceWith("");
+                            if (userUrlList.length == 0) {
+                                document.getElementById("date-clear-box").replaceWith("");
+                            }
+                        });
+                    });
+                }
+            }
         }
     });
 }
