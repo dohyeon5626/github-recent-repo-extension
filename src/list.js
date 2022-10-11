@@ -79,7 +79,7 @@ if (metaTag != undefined) {
     panel.setAttribute("tabindex", "0");
     panel.hidden = true;
     panel.setAttribute("labelledby", "feed-history");
-    li.setAttribute("data-view-component", "true");
+    panel.setAttribute("data-view-component", "true");
 
     let watcher = metaTag.content;
     chrome.storage.sync.get(['history'], (result) => {
