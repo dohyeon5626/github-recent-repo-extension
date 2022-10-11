@@ -12,6 +12,10 @@
             "js": ["src/repo.js"]
         },
         {
+            "matches": ["https://github.com/*"],
+            "js": ["src/org.js"]
+        },
+        {
             "matches": ["https://github.com/"],
             "js": ["src/list.js"]
         }
