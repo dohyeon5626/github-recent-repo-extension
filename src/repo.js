@@ -3,11 +3,11 @@ fetch("https://raw.githubusercontent.com/ozh/github-colors/master/colors.json")
     .then((data) => {
         let color = data;
         let metaTag = document.querySelector("meta[name=octolytics-actor-login]");
+        let info = location.href.split('/');
+        let user = info[3];
+        let repo = info[4];
 
-        if (metaTag != undefined) {
-            let info = location.href.split('/');
-            let user = info[3];
-            let repo = info[4];
+        if (metaTag != undefined && user != undefined && repo != undefined) {
             let watcher = metaTag.content;
 
             chrome.storage.sync.get(['history'], function(result) {
@@ -32,6 +32,7 @@ fetch("https://raw.githubusercontent.com/ozh/github-colors/master/colors.json")
                             description: data.description,
                             star: data.stargazers_count
                         });
+                        userUrlList = userUrlList.splice(0, 30);
                         urlMap.set(watcher, userUrlList);
             
                         chrome.storage.sync.set({history: Object.fromEntries(urlMap)});

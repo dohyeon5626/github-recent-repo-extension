@@ -36,6 +36,7 @@ for (let i=0; i<aTagList.length; i++) {
                                     description: data.description,
                                     star: data.stargazers_count
                                 });
+                                userUrlList = userUrlList.splice(0, 30);
                                 urlMap.set(watcher, userUrlList);
                     
                                 chrome.storage.sync.set({history: Object.fromEntries(urlMap)});
