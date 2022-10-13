@@ -10,7 +10,7 @@ for (let i=0; i<aTagList.length; i++) {
             let watcher = metaTag.content;
 
             getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
-                userRepoInfoList = userRepoInfoList.filter(repoInfo => repoInfo.repo != repo && repoInfo.user != user);
+                userRepoInfoList = userRepoInfoList.filter(repoInfo => repoInfo.repo != repo || repoInfo.user != user);
                 userRepoInfoList.unshift({
                     user: user,
                     repo: repo

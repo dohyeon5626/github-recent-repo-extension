@@ -7,7 +7,7 @@ if (metaTag != undefined) {
     let watcher = metaTag.content;
 
     getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
-        userRepoInfoList = userRepoInfoList.filter(repoInfo => repoInfo.repo != repo && repoInfo.user != user);
+        userRepoInfoList = userRepoInfoList.filter(repoInfo => repoInfo.repo != repo || repoInfo.user != user);
         userRepoInfoList.unshift({
             user: user,
             repo: repo
