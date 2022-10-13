@@ -1,11 +1,7 @@
 let aTagList = document.getElementsByTagName("a");
-console.log(aTagList);
 for (let i=0; i<aTagList.length; i++) {
     aTagList[i].onclick = () => {
-        fetch("https://raw.githubusercontent.com/ozh/github-colors/master/colors.json")
-            .then((response) => response.json())
-            .then((data) => {
-                let color = data;
+        getLanguageColor((color) => {
                 let metaTag = document.querySelector("meta[name=octolytics-actor-login]");
                 let info = aTagList[i].href.split('/');
                 let user = info[3];
@@ -14,33 +10,23 @@ for (let i=0; i<aTagList.length; i++) {
                 if (metaTag != undefined && aTagList[i].href.indexOf("https://github.com/") != -1 && user != undefined && repo != undefined) {
                     let watcher = metaTag.content;
 
-                    chrome.storage.sync.get(['history'], function(result) {
-                        let urlMap = result.history != undefined ? new Map(Object.entries(result.history)) : new Map();
-
-                        let userUrlList = urlMap.get(watcher);
-                        userUrlList = userUrlList != undefined ? userUrlList : [];
-                        for (let i=0; i<userUrlList.length; i++) {
-                            if (userUrlList[i].user == user && userUrlList[i].repo == repo) {
-                                userUrlList.splice(i, 1);
-                            }
-                        }
-                        fetch("https://api.github.com/repos/" + user + "/" + repo)
-                            .then((response) => response.json())
-                            .then((data) => {
-                                let languageColor = color[data.language];
-                                userUrlList.unshift({
+                    getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
+                        userRepoInfoList = userRepoInfoList.filter(repoInfo => repoInfo.repo != repo && repoInfo.user != user);
+                        getRepoInfo(user, repo, (repoInfo) => {
+                            if (repoInfo.stargazers_count != undefined) {
+                                let languageColor = color[repoInfo.language];
+                                userRepoInfoList.unshift({
                                     user: user,
                                     repo: repo,
-                                    language: data.language,
+                                    language: repoInfo.language,
                                     languageColor: languageColor != undefined ? languageColor.color : undefined,
-                                    description: data.description,
-                                    star: data.stargazers_count
+                                    description: repoInfo.description,
+                                    star: repoInfo.stargazers_count
                                 });
-                                userUrlList = userUrlList.splice(0, 30);
-                                urlMap.set(watcher, userUrlList);
-                    
-                                chrome.storage.sync.set({history: Object.fromEntries(urlMap)});
-                            });
+                                infoMap.set(watcher, userRepoInfoList.splice(0, 30));
+                                setUserRepoList(infoMap);
+                            }
+                        });
                     });
                 }
             });

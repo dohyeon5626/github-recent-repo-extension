@@ -9,15 +9,15 @@
     "content_scripts": [
         {
             "matches": ["https://github.com/*/*"],
-            "js": ["src/repo.js"]
+            "js": ["src/chrome-service.js", "src/api.js", "src/repo.js"]
         },
         {
             "matches": ["https://github.com/*"],
-            "js": ["src/org.js"]
+            "js": ["src/chrome-service.js", "src/api.js", "src/org.js"]
         },
         {
             "matches": ["https://github.com/"],
-            "js": ["src/list.js"]
+            "js": ["src/chrome-service.js", "src/tag-service.js", "src/list.js"]
         }
     ]
 
