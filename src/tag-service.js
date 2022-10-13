@@ -70,7 +70,7 @@ let getRepoLanguageTag = (repoLanguageColor, repoLanguage) =>
     ` : "";
 
 let getRepoTag = (user, repo, repoDescription, repoLanguageColor, repoLanguage, repoStarAmount) =>
-    user != undefined && repo != undefined && repoStarAmount != undefined ? `
+    user != undefined && repo != undefined ? `
         <div id="box-${user}-${repo}" class="py-2">
             <div class="Box p-3">
                 <div>
@@ -99,18 +99,38 @@ let getRepoTag = (user, repo, repoDescription, repoLanguageColor, repoLanguage, 
         </div>
     ` : "";
 
-let getRepoListTag = (userUrlList) => {
-    let list = userUrlList.length != 0 ? getDateClearBoxTag() : "";
-    for (let i=0; i<userUrlList.length; i++) {
-        let user = userUrlList[i].user;
-        let repo = userUrlList[i].repo;
-        let repoDescription = userUrlList[i].description;
-        let repoLanguageColor = userUrlList[i].languageColor;
-        let repoLanguage = userUrlList[i].language;
-        let repoStarAmount = userUrlList[i].star;
-        list += getRepoTag(user, repo, repoDescription, repoLanguageColor, repoLanguage, repoStarAmount);
+let getNoRenderingRepoTag = (user, repo) =>
+    user != undefined && repo != undefined ? `
+        <div id="box-${user}-${repo}" class="py-2"></div>
+    ` : "";
+
+let getNoRenderingRepoListTag = (userRepoInfoList) => {
+    let list = userRepoInfoList.length != 0 ? getDateClearBoxTag() : "";
+    for (let i=0; i<userRepoInfoList.length; i++) {
+        let user = userRepoInfoList[i].user;
+        let repo = userRepoInfoList[i].repo;
+        list += getNoRenderingRepoTag(user, repo);
     }
     return list;
+}
+
+let replaceNoRenderingRepoListTag = (userRepoInfoList, color, watcher) => {
+    for (let i=0; i<userRepoInfoList.length; i++) {
+        let user = userRepoInfoList[i].user;
+        let repo = userRepoInfoList[i].repo;
+        getRepoInfo(user, repo, (repoInfo) => {
+            if (repoInfo.stargazers_count != undefined) {
+                let languageColor = color[repoInfo.language];
+                document.getElementById("box-" + user + "-" + repo).outerHTML = getRepoTag(user, repo, repoInfo.description, languageColor != undefined ? languageColor.color : undefined, repoInfo.language, repoInfo.stargazers_count);
+                document.getElementById("delete-" + user + "-" + repo).onclick = () => {
+                    removeRepo(watcher, user, repo);
+                }
+            }
+            else {
+                removeRepo(watcher, user, repo);
+            }
+        });
+    }
 }
 
 let applyClearButtonEvent = (panel, watcher) => {
@@ -122,24 +142,4 @@ let applyClearButtonEvent = (panel, watcher) => {
             });
         });
     };
-}
-
-let applyDeleteButtonEvent = (userUrlList, watcher) => {
-    for (let i=0; i<userUrlList.length; i++) {
-        let user = userUrlList[i].user;
-        let repo = userUrlList[i].repo;
-        document.getElementById("delete-" + user + "-" + repo).onclick = () => {
-            getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
-                userRepoInfoList = userRepoInfoList.filter(repoInfo => repoInfo.repo != repo && repoInfo.user != user);
-
-                infoMap.set(watcher, userRepoInfoList);
-                setUserRepoList(infoMap, () => {
-                    document.getElementById("box-" + user + "-" + repo).replaceWith("");
-                    if (userRepoInfoList.length == 0) {
-                        document.getElementById("date-clear-box").replaceWith("");
-                    }
-                });
-            })
-        }
-    }
 }

@@ -6,11 +6,12 @@ if (metaTag != undefined) {
     let watcher = metaTag.content;
 
     getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
-        panel.innerHTML = getRepoListTag(userRepoInfoList);
+        panel.innerHTML = getNoRenderingRepoListTag(userRepoInfoList);
         document.querySelector("tab-container").appendChild(panel);
+        getLanguageColor((color) => replaceNoRenderingRepoListTag(userRepoInfoList, color, watcher));
+
         if (userRepoInfoList.length != 0) {
             applyClearButtonEvent(panel, watcher);
-            applyDeleteButtonEvent(userRepoInfoList, watcher);
         }
     })
 }

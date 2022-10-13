@@ -1,29 +1,18 @@
-getLanguageColor((color) => {
-    let metaTag = document.querySelector("meta[name=octolytics-actor-login]");
+let metaTag = document.querySelector("meta[name=octolytics-actor-login]");
 
-    if (metaTag != undefined) {
-        let info = location.href.split('/');
-        let user = info[3];
-        let repo = info[4];
-        let watcher = metaTag.content;
+if (metaTag != undefined) {
+    let info = location.href.split('/');
+    let user = info[3];
+    let repo = info[4];
+    let watcher = metaTag.content;
 
-        getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
-            userRepoInfoList = userRepoInfoList.filter(repoInfo => repoInfo.repo != repo && repoInfo.user != user);
-            getRepoInfo(user, repo, (repoInfo) => {
-                if (repoInfo.stargazers_count != undefined) {
-                    let languageColor = color[repoInfo.language];
-                    userRepoInfoList.unshift({
-                        user: user,
-                        repo: repo,
-                        language: repoInfo.language,
-                        languageColor: languageColor != undefined ? languageColor.color : undefined,
-                        description: repoInfo.description,
-                        star: repoInfo.stargazers_count
-                    });
-                    infoMap.set(watcher, userRepoInfoList.splice(0, 30));
-                    setUserRepoList(infoMap);
-                }
-            });
+    getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
+        userRepoInfoList = userRepoInfoList.filter(repoInfo => repoInfo.repo != repo && repoInfo.user != user);
+        userRepoInfoList.unshift({
+            user: user,
+            repo: repo
         });
-    }
-});
+        infoMap.set(watcher, userRepoInfoList.splice(0, 30));
+        setUserRepoList(infoMap);
+    });
+}
