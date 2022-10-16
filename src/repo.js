@@ -3,7 +3,7 @@ let metaTag = document.querySelector("meta[name=octolytics-actor-login]");
 if (metaTag != undefined) {
     let info = location.href.split('/');
     let user = info[3];
-    let repo = info[4];
+    let repo = info[4].split((/[^\w\sㄱ-힣]|[\_]/g))[0];
     let watcher = metaTag.content;
 
     getUserRepoList(watcher, (infoMap, userRepoInfoList) => {

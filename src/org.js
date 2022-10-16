@@ -4,7 +4,7 @@ for (let i=0; i<aTagList.length; i++) {
         let metaTag = document.querySelector("meta[name=octolytics-actor-login]");
         let info = aTagList[i].href.split('/');
         let user = info[3];
-        let repo = info[4];
+        let repo = info[4].split((/[^\w\sㄱ-힣]|[\_]/g))[0];
 
         if (metaTag != undefined && aTagList[i].href.indexOf("https://github.com/") != -1 && user != undefined && repo != undefined) {
             let watcher = metaTag.content;
