@@ -24,3 +24,13 @@ let removeRepo = (watcher, user, repo) => {
         });
     })
 }
+
+let getToken = (callback) => {
+    chrome.storage.sync.get(['token'], (result) => {
+        callback(result.token);
+    });
+}
+
+let setToken = (token, callback) => {
+    chrome.storage.sync.set({token: token}, callback);
+}

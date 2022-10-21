@@ -1,0 +1,54 @@
+<html lang="en">
+    <style>
+        #token-box {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 280px;
+        }
+        #token-input-box {
+            width: 180px;
+            height: 24px;
+            background-color: #F6F8FA;
+            padding: 5px 12px;
+            border: 1px solid #D0D7DE;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #token-input {
+            border: 0px;
+            vertical-align: middle;
+            line-height: 20px;
+            color: #24292F;
+            font-size: 14px;
+            outline: none;
+            background-color: #F6F8FA;
+        }
+        #token-button {
+            height: 34px;
+            color: #FFFFFF;
+            background-color: #2DA44E;
+            padding: 8px 12px;
+            border: 1px solid;
+            border-radius: 6px;
+            border-color: rgba(27,31,36,0.15);
+            vertical-align: middle;
+            cursor: pointer;
+        }
+    </style>
+    <body>
+        <div id="token-box">
+            <div id="token-input-box">
+                <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-key">
+                    <path fill-rule="evenodd" d="M6.5 5.5a4 4 0 112.731 3.795.75.75 0 00-.768.18L7.44 10.5H6.25a.75.75 0 00-.75.75v1.19l-.06.06H4.25a.75.75 0 00-.75.75v1.19l-.06.06H1.75a.25.25 0 01-.25-.25v-1.69l5.024-5.023a.75.75 0 00.181-.768A3.995 3.995 0 016.5 5.5zm4-5.5a5.5 5.5 0 00-5.348 6.788L.22 11.72a.75.75 0 00-.22.53v2C0 15.216.784 16 1.75 16h2a.75.75 0 00.53-.22l.5-.5a.75.75 0 00.22-.53V14h.75a.75.75 0 00.53-.22l.5-.5a.75.75 0 00.22-.53V12h.75a.75.75 0 00.53-.22l.932-.932A5.5 5.5 0 1010.5 0zm.5 6a1 1 0 100-2 1 1 0 000 2z"></path>
+                </svg>
+                <input type="text" id="token-input" placeholder="Input github token">
+            </div>
+            <button id="token-button">Enter</button>
+        </div>
+    </body>
+    <script src="chrome-service.js"></script>
+    <script src="popup.js"></script>
+</html>
