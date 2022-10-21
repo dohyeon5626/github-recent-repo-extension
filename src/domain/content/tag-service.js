@@ -136,7 +136,8 @@ let getNoRenderingRepoListTag = (userRepoInfoList) => {
 }
 
 let replaceNoRenderingRepoListTag = (userRepoInfoList, color, watcher) => {
-    for (let i=0; i<userRepoInfoList.length; i++) {
+    let length = userRepoInfoList.length;
+    for (let i=0; i<length; i++) {
         let user = userRepoInfoList[i].user;
         let repo = userRepoInfoList[i].repo;
         getRepoInfo(user, repo, (repoInfo) => {
@@ -148,7 +149,13 @@ let replaceNoRenderingRepoListTag = (userRepoInfoList, color, watcher) => {
                 document.getElementById("box-" + user + "-" + repo).outerHTML = getPrivateRepoTag(user, repo);
             }
             document.getElementById("delete-" + user + "-" + repo).onclick = () => {
-                removeRepo(watcher, user, repo);
+                removeRepo(watcher, user, repo, () => {
+                    length--;
+                    document.getElementById("box-" + user + "-" + repo).replaceWith("");
+                    if (length == 0) {
+                        document.getElementById("date-clear-box").replaceWith("");
+                    }
+                });
             }
         });
     }
