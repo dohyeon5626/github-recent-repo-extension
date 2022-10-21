@@ -13,7 +13,7 @@ let setUserRepoList = (infoMap, callback) => {
 
 let removeRepo = (watcher, user, repo) => {
     getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
-        userRepoInfoList = userRepoInfoList.filter(repoInfo => repoInfo.repo != repo && repoInfo.user != user);
+        userRepoInfoList = userRepoInfoList.filter(repoInfo => repoInfo.repo != repo || repoInfo.user != user);
 
         infoMap.set(watcher, userRepoInfoList);
         setUserRepoList(infoMap, () => {

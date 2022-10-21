@@ -14,21 +14,21 @@
     },
 
     "action": {
-        "default_popup": "src/popup.html"
+        "default_popup": "src/domain/popup/popup.html"
     },
 
     "content_scripts": [
         {
             "matches": ["https://github.com/*/*"],
-            "js": ["src/chrome-service.js", "src/api.js", "src/repo.js"]
+            "js": ["src/global/chrome/chrome-service.js", "src/global/api/api.js", "src/domain/content/repo.js"]
         },
         {
             "matches": ["https://github.com/*"],
-            "js": ["src/chrome-service.js", "src/api.js", "src/org.js"]
+            "js": ["src/global/chrome/chrome-service.js", "src/global/api/api.js", "src/domain/content/org.js"]
         },
         {
             "matches": ["https://github.com/"],
-            "js": ["src/chrome-service.js", "src/tag-service.js", "src/list.js"]
+            "js": ["src/global/chrome/chrome-service.js", "src/domain/content/tag-service.js", "src/domain/content/list.js"]
         }
     ]
 
