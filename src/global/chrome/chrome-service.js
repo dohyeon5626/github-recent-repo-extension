@@ -17,7 +17,7 @@ let removeRepo = (watcher, user, repo, callback) => {
 
         infoMap.set(watcher, userRepoInfoList);
         setUserRepoList(infoMap, callback);
-    })
+    });
 }
 
 let getToken = (callback) => {

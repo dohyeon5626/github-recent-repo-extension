@@ -17,6 +17,10 @@
         "default_popup": "src/domain/popup/popup.html"
     },
 
+    "background": {
+        "service_worker": "src/domain/background/background.js"
+    },
+
     "content_scripts": [
         {
             "matches": ["https://github.com/*/*"],

@@ -3,6 +3,7 @@ if (metaTag != undefined) {
     let button = getFeedButtonTagElement("History");
     appendFeedLiTagElement(button);
     let panel = getPanelTagElement();
+    applyFeedButtonClick();
     let watcher = metaTag.content;
 
     getUserRepoList(watcher, (infoMap, userRepoInfoList) => {

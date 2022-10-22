@@ -18,9 +18,6 @@ let getFeedButtonTagElement = (buttonText) => {
     button.classList.add("UnderlineNav-item");
     button.setAttribute("aria-selected", "false");
     button.setAttribute("tabindex", "-1");
-    button.onclick = () => {
-        document.querySelector("div.UnderlineNav-actions.js-feedback-link.d-flex").hidden = true;
-    }
     return button;
 }
 
@@ -33,6 +30,36 @@ let getPanelTagElement = () => {
     panel.setAttribute("labelledby", "feed-history");
     panel.setAttribute("data-view-component", "true");
     return panel;
+}
+
+let applyFeedButtonClick = () => {
+    document.getElementById("feed-original").onclick = () => {
+        chrome.runtime.sendMessage({
+            action: "set",
+            value: "feed-original"
+        });
+    };
+    document.getElementById("feed-next").onclick = () => {
+        chrome.runtime.sendMessage({
+            action: "set",
+            value: "feed-next"
+        });
+    };
+    document.getElementById("feed-history").onclick = () => {
+        chrome.runtime.sendMessage({
+            action: "set",
+            value: "feed-history"
+        });
+        document.querySelector("div.UnderlineNav-actions.js-feedback-link.d-flex").hidden = true;
+    };
+    chrome.runtime.sendMessage({
+        action: "get"
+    }, (id) => {
+        let button = document.getElementById(id);
+        button.style.border = "none";
+        button.style.outline = "none";
+        button.click();
+    });
 }
 
 let getDateClearBoxTag = () => `
