@@ -64,20 +64,29 @@ let applyFeedButtonClick = () => {
 
 let getDateClearBoxTag = () => `
     <div id="date-clear-box" class="d-flex flex-items-baseline" style="padding-top:16px; padding-bottom:8px; justify-content: space-between">
-        <div style="disply: inline">
-            Updated on
-            <b>${
-                new Date().toLocaleDateString("en-us", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                })
-            }</b>
-        </div>
-        <button id="clear-button" class="btn btn-sm ml-2 btn-danger">clear</button>
+        <input type="text" id="repo-history-search" class="form-control input-block" placeholder="Find a recent repository history…">
+        <button id="clear-button" class="btn btn-sm ml-2 btn-danger" style="height: 32px">clear</button>
     </div>
     `;
+
+let applyRepoHistorySearch = (userRepoInfoList) => {
+    let input = document.getElementById("repo-history-search");
+    input.onkeyup = () => {
+        for (let i=0; i<userRepoInfoList.length; i++) {
+            let user = userRepoInfoList[i].user;
+            let repo = userRepoInfoList[i].repo;
+            let repoTag = document.getElementById(`box-${user}-${repo}`);
+            if (repoTag != undefined) {
+                if (user.toUpperCase().includes(input.value.toUpperCase()) || repo.toUpperCase().includes(input.value.toUpperCase())) {
+                    repoTag.style.display = "block";
+                }
+                else {
+                    repoTag.style.display = "none";
+                }
+            }
+        }
+    }
+}
 
 let getRepoDescriptionTag = (repoDescription) =>
     repoDescription != undefined ? `

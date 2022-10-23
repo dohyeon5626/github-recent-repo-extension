@@ -6,13 +6,15 @@ if (metaTag != undefined) {
     let repo = info[4].split((/[!,@,#,$,%,^,&,*,(,),+,?,>,<,~,₩]/g))[0];
     let watcher = metaTag.content;
 
-    getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
-        userRepoInfoList = userRepoInfoList.filter(repoInfo => repoInfo.repo != repo || repoInfo.user != user);
-        userRepoInfoList.unshift({
-            user: user,
-            repo: repo
+    if (user != "settings") {
+        getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
+            userRepoInfoList = userRepoInfoList.filter(repoInfo => repoInfo.repo != repo || repoInfo.user != user);
+            userRepoInfoList.unshift({
+                user: user,
+                repo: repo
+            });
+            infoMap.set(watcher, userRepoInfoList.splice(0, 30));
+            setUserRepoList(infoMap);
         });
-        infoMap.set(watcher, userRepoInfoList.splice(0, 30));
-        setUserRepoList(infoMap);
-    });
+    }
 }

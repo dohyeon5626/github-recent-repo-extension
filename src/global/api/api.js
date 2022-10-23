@@ -1,8 +1,8 @@
 let getLanguageColor = (callback) => {
     getToken((token) => {
         fetch("https://raw.githubusercontent.com/ozh/github-colors/master/colors.json")
-        .then((response) => response.json())
-        .then((data) => callback(data));
+            .then((response) => response.json())
+            .then((data) => callback(data));
     });
 }
 

@@ -1,7 +1,7 @@
 let input = document.getElementById("token-input");
 
 getToken((token) => {
-    input.value = token;
+    input.value = token === undefined ? null : token;
 });
 
 document.getElementById("token-button").onclick = () => {
