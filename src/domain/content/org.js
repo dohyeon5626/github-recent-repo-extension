@@ -7,7 +7,7 @@ for (let i=0; i<aTagList.length; i++) {
             let user = info[3];
             let repo = info[4].split((/[!,@,#,$,%,^,&,*,(,),+,?,>,<,~,₩]/g))[0];
 
-            if (metaTag != undefined && aTagList[i].href.indexOf("https://github.com/") != -1 && user != "settings" && user != undefined && repo != undefined) {
+            if (metaTag != undefined && aTagList[i].href.indexOf("https://github.com/") != -1 && user != undefined && repo != undefined) {
                 let watcher = metaTag.content;
 
                 getUserRepoList(watcher, (infoMap, userRepoInfoList) => {

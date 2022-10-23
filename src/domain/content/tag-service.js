@@ -63,7 +63,7 @@ let applyFeedButtonClick = () => {
 }
 
 let getDateClearBoxTag = () => `
-    <div id="date-clear-box" class="d-flex flex-items-baseline" style="padding-top:16px; padding-bottom:8px; justify-content: space-between">
+    <div id="date-clear-box" class="d-flex flex-items-baseline" style="display: none!important; padding-top:16px; padding-bottom:8px; justify-content: space-between">
         <input type="text" id="repo-history-search" class="form-control input-block" placeholder="Find a recent repository history…">
         <button id="clear-button" class="btn btn-sm ml-2 btn-danger" style="height: 32px">clear</button>
     </div>
@@ -71,17 +71,19 @@ let getDateClearBoxTag = () => `
 
 let applyRepoHistorySearch = (userRepoInfoList) => {
     let input = document.getElementById("repo-history-search");
-    input.onkeyup = () => {
-        for (let i=0; i<userRepoInfoList.length; i++) {
-            let user = userRepoInfoList[i].user;
-            let repo = userRepoInfoList[i].repo;
-            let repoTag = document.getElementById(`box-${user}-${repo}`);
-            if (repoTag != undefined) {
-                if (user.toUpperCase().includes(input.value.toUpperCase()) || repo.toUpperCase().includes(input.value.toUpperCase())) {
-                    repoTag.style.display = "block";
-                }
-                else {
-                    repoTag.style.display = "none";
+    if (input != undefined) {
+        input.onkeyup = () => {
+            for (let i=0; i<userRepoInfoList.length; i++) {
+                let user = userRepoInfoList[i].user;
+                let repo = userRepoInfoList[i].repo;
+                let repoTag = document.getElementById(`box-${user}-${repo}`);
+                if (repoTag != undefined) {
+                    if (user.toUpperCase().includes(input.value.toUpperCase()) || repo.toUpperCase().includes(input.value.toUpperCase())) {
+                        repoTag.style.display = "block";
+                    }
+                    else {
+                        repoTag.style.display = "none";
+                    }
                 }
             }
         }
@@ -135,27 +137,6 @@ let getPublicRepoTag = (user, repo, repoDescription, repoLanguageColor, repoLang
         </div>
     ` : "";
 
-let getPrivateRepoTag = (user, repo) =>
-    user != undefined && repo != undefined ? `
-        <div id="box-${user}-${repo}" class="py-2">
-            <div class="Box p-3">
-                <div>
-                    <div class="f4 lh-condensed text-bold color-fg-default">
-                        <a class="Link--primary text-bold no-underline wb-break-all d-inline-block" href="/${user}/${repo}">${user}/${repo}</a>
-                        <button id="delete-${user}-${repo}" class="d-flex BtnGroup float-right js-toggler-container SelectMenu-closeButton js-social-container" type="button" aria-label="Close menu">
-                            <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-x">
-                                <path fill-rule="evenodd" d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"></path>
-                            </svg>
-                        </button>
-                    </div>
-                    <div style="margin-top: 10px">
-                        <span data-view-component="true" class="Label Label--fail Label--inline ml-1 px-1">Private</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    ` : "";
-
 let getNoRenderingRepoTag = (user, repo) =>
     user != undefined && repo != undefined ? `
         <div id="box-${user}-${repo}" class="py-2"></div>
@@ -173,25 +154,31 @@ let getNoRenderingRepoListTag = (userRepoInfoList) => {
 
 let replaceNoRenderingRepoListTag = (userRepoInfoList, color, watcher) => {
     let length = userRepoInfoList.length;
+    let clearBox = document.getElementById("date-clear-box");
     for (let i=0; i<length; i++) {
         let user = userRepoInfoList[i].user;
         let repo = userRepoInfoList[i].repo;
         getRepoInfo(user, repo, (repoInfo) => {
             if (repoInfo.stargazers_count != undefined) {
+                clearBox.style.display = "flex";
                 let languageColor = color[repoInfo.language];
                 document.getElementById("box-" + user + "-" + repo).outerHTML = getPublicRepoTag(user, repo, repoInfo.description, languageColor != undefined ? languageColor.color : undefined, repoInfo.language, repoInfo.stargazers_count);
+                document.getElementById("delete-" + user + "-" + repo).onclick = () => {
+                    removeRepo(watcher, user, repo, () => {
+                        length--;
+                        document.getElementById("box-" + user + "-" + repo).replaceWith("");
+                        if (length == 0) {
+                            document.getElementById("date-clear-box").replaceWith("");
+                        }
+                    });
+                }
             }
             else {
-                document.getElementById("box-" + user + "-" + repo).outerHTML = getPrivateRepoTag(user, repo);
-            }
-            document.getElementById("delete-" + user + "-" + repo).onclick = () => {
-                removeRepo(watcher, user, repo, () => {
-                    length--;
-                    document.getElementById("box-" + user + "-" + repo).replaceWith("");
-                    if (length == 0) {
-                        document.getElementById("date-clear-box").replaceWith("");
-                    }
-                });
+                length--;
+                document.getElementById("box-" + user + "-" + repo).outerHTML = "";
+                if (length == 0) {
+                    document.getElementById("date-clear-box").replaceWith("");
+                }
             }
         });
     }

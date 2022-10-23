@@ -9,8 +9,8 @@ if (metaTag != undefined) {
     getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
         panel.innerHTML = getNoRenderingRepoListTag(userRepoInfoList);
         document.querySelector("tab-container").appendChild(panel);
-        applyRepoHistorySearch(userRepoInfoList);
         getLanguageColor((color) => replaceNoRenderingRepoListTag(userRepoInfoList, color, watcher));
+        applyRepoHistorySearch(userRepoInfoList);
 
         if (userRepoInfoList.length != 0) {
             applyClearButtonEvent(panel, watcher);
