@@ -28,6 +28,10 @@
             "js": ["src/global/chrome/chrome-service.js", "src/global/api/api.js", "src/domain/content/repo.js"]
         },
         {
+            "matches": ["https://github.com/*"],
+            "js": ["src/global/chrome/chrome-service.js"]
+        },
+        {
             "matches": ["https://github.com/"],
             "js": ["src/global/chrome/chrome-service.js", "src/global/api/api.js", "src/domain/content/tag-service.js", "src/domain/content/list.js"]
         }
