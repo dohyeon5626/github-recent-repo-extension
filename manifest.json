@@ -1,10 +1,11 @@
 {
     "name": "Recent Repo",
     "description": "Take a look at the repositories you've seen recently.",
-    "version": "1.2",
+    "version": "1.3",
     "manifest_version": 3,
 
-    "permissions" : ["storage"],
+    "permissions" : ["storage", "scripting"],
+    "host_permissions" : ["https://github.com/"],
 
     "icons": {
         "16": "icon/16.png",
@@ -27,12 +28,8 @@
             "js": ["src/global/chrome/chrome-service.js", "src/global/api/api.js", "src/domain/content/repo.js"]
         },
         {
-            "matches": ["https://github.com/*"],
-            "js": ["src/global/chrome/chrome-service.js", "src/global/api/api.js", "src/domain/content/org.js"]
-        },
-        {
             "matches": ["https://github.com/"],
-            "js": ["src/global/chrome/chrome-service.js", "src/domain/content/tag-service.js", "src/domain/content/list.js"]
+            "js": ["src/global/chrome/chrome-service.js", "src/global/api/api.js", "src/domain/content/tag-service.js", "src/domain/content/list.js"]
         }
     ]
 
