@@ -24,16 +24,16 @@
 
     "content_scripts": [
         {
-            "matches": ["https://github.com/*/*"],
-            "js": ["src/global/chrome/chrome-service.js", "src/global/api/api.js", "src/domain/content/repo.js"]
+            "matches": ["<all_urls>"],
+            "js": ["src/global/chrome/chrome-service.js", "src/global/api/api.js", "src/domain/content/tag-service.js"]   
         },
         {
-            "matches": ["https://github.com/*"],
-            "js": ["src/global/chrome/chrome-service.js"]
+            "matches": ["https://github.com/*/*"],
+            "js": ["src/domain/content/repo.js"]
         },
         {
             "matches": ["https://github.com/"],
-            "js": ["src/global/chrome/chrome-service.js", "src/global/api/api.js", "src/domain/content/tag-service.js", "src/domain/content/list.js"]
+            "js": ["src/domain/content/list.js"]
         }
     ]
 

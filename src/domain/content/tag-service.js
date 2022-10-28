@@ -35,25 +35,25 @@ let getPanelTagElement = () => {
 let applyFeedButtonClick = () => {
     document.getElementById("feed-original").onclick = () => {
         chrome.runtime.sendMessage({
-            action: "set",
+            action: "setFeed",
             value: "feed-original"
         });
     };
     document.getElementById("feed-next").onclick = () => {
         chrome.runtime.sendMessage({
-            action: "set",
+            action: "setFeed",
             value: "feed-next"
         });
     };
     document.getElementById("feed-history").onclick = () => {
         chrome.runtime.sendMessage({
-            action: "set",
+            action: "setFeed",
             value: "feed-history"
         });
         document.querySelector("div.UnderlineNav-actions.js-feedback-link.d-flex").hidden = true;
     };
     chrome.runtime.sendMessage({
-        action: "get"
+        action: "getFeed"
     }, (id) => {
         let button = document.getElementById(id);
         button.style.border = "none";
@@ -159,7 +159,6 @@ let replaceNoRenderingRepoListTag = (userRepoInfoList, color, watcher) => {
         let user = userRepoInfoList[i].user;
         let repo = userRepoInfoList[i].repo;
         getRepoInfo(user, repo, (repoInfo) => {
-            if (repoInfo.stargazers_count != undefined) {
                 clearBox.style.display = "flex";
                 let languageColor = color[repoInfo.language];
                 document.getElementById("box-" + user + "-" + repo).outerHTML = getPublicRepoTag(user, repo, repoInfo.description, languageColor != undefined ? languageColor.color : undefined, repoInfo.language, repoInfo.stargazers_count);
@@ -172,15 +171,15 @@ let replaceNoRenderingRepoListTag = (userRepoInfoList, color, watcher) => {
                         }
                     });
                 }
-            }
-            else {
+            },
+            () => {
                 length--;
                 document.getElementById("box-" + user + "-" + repo).outerHTML = "";
                 if (length == 0) {
                     document.getElementById("date-clear-box").replaceWith("");
                 }
             }
-        });
+        );
     }
 }
 
