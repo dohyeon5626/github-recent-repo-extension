@@ -22,13 +22,6 @@ chrome.runtime.onMessage.addListener(
         else if (request.action == "getRepoCache") {
             callback(repoCache.get(request.user + request.repo));
         }
-        else if (request.action == "setLanguageColorCache") {
-            colorCache = request.data;
-            callback();
-        }
-        else if (request.action == "getLanguageColorCache") {
-            callback(colorCache);
-        }
         return true;
     }
 );

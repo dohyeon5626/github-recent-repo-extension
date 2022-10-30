@@ -1,27 +1,3 @@
-let getLanguageColor = (callback) => {
-    chrome.runtime.sendMessage({
-        action: "getLanguageColorCache",
-    }, (data) => {
-        if (data != null) {
-            callback(data);
-        }
-        else {
-            getToken((token) => {
-                fetch("https://raw.githubusercontent.com/ozh/github-colors/master/colors.json")
-                    .then((response) => response.json())
-                    .then((data) => {
-                        chrome.runtime.sendMessage({
-                            action: "setLanguageColorCache",
-                            data: data
-                        }, () => {
-                            callback(data);
-                        });
-                    });
-            });
-        }
-    });
-}
-
 let getRepoInfo = (user, repo, successCallback, failCallback) => {
     chrome.runtime.sendMessage({
         action: "getRepoCache",

@@ -33,7 +33,7 @@
         },
         {
             "matches": ["https://github.com/"],
-            "js": ["src/domain/content/list.js"]
+            "js": ["src/global/data/color.js", "src/domain/content/list.js"]
         }
     ]
 

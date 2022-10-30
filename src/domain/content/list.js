@@ -9,7 +9,7 @@ if (metaTag != undefined) {
     getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
         panel.innerHTML = getNoRenderingRepoListTag(userRepoInfoList);
         document.querySelector("tab-container").appendChild(panel);
-        getLanguageColor((color) => replaceNoRenderingRepoListTag(userRepoInfoList, color, watcher));
+        replaceNoRenderingRepoListTag(userRepoInfoList, watcher);
         applyRepoHistorySearch(userRepoInfoList);
 
         if (userRepoInfoList.length != 0) {

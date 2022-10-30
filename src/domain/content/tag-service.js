@@ -152,7 +152,7 @@ let getNoRenderingRepoListTag = (userRepoInfoList) => {
     return list;
 }
 
-let replaceNoRenderingRepoListTag = (userRepoInfoList, color, watcher) => {
+let replaceNoRenderingRepoListTag = (userRepoInfoList, watcher) => {
     let length = userRepoInfoList.length;
     let clearBox = document.getElementById("date-clear-box");
     for (let i=0; i<length; i++) {
@@ -160,8 +160,8 @@ let replaceNoRenderingRepoListTag = (userRepoInfoList, color, watcher) => {
         let repo = userRepoInfoList[i].repo;
         getRepoInfo(user, repo, (repoInfo) => {
                 clearBox.style.display = "flex";
-                let languageColor = color[repoInfo.language];
-                document.getElementById("box-" + user + "-" + repo).outerHTML = getPublicRepoTag(user, repo, repoInfo.description, languageColor != undefined ? languageColor.color : undefined, repoInfo.language, repoInfo.stargazers_count);
+                let languageColor = getColor(repoInfo.language);
+                document.getElementById("box-" + user + "-" + repo).outerHTML = getPublicRepoTag(user, repo, repoInfo.description, languageColor, repoInfo.language, repoInfo.stargazers_count);
                 document.getElementById("delete-" + user + "-" + repo).onclick = () => {
                     removeRepo(watcher, user, repo, () => {
                         length--;
