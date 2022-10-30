@@ -152,6 +152,11 @@ let getNoRenderingRepoListTag = (userRepoInfoList) => {
     return list;
 }
 
+let getEmojiTag = (repoInfo) => `
+    <g-emoji class="g-emoji" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/${repoInfo.unicode}.png">
+        ${repoInfo.emoji}
+    </g-emoji>`;
+
 let replaceNoRenderingRepoListTag = (userRepoInfoList, watcher) => {
     let length = userRepoInfoList.length;
     let clearBox = document.getElementById("date-clear-box");
@@ -161,7 +166,18 @@ let replaceNoRenderingRepoListTag = (userRepoInfoList, watcher) => {
         getRepoInfo(user, repo, (repoInfo) => {
                 clearBox.style.display = "flex";
                 let languageColor = getColor(repoInfo.language);
-                document.getElementById("box-" + user + "-" + repo).outerHTML = getPublicRepoTag(user, repo, repoInfo.description, languageColor, repoInfo.language, repoInfo.stargazers_count);
+                let description = repoInfo.description;
+                let emojis = description.match(/:.*:/g);
+                if (emojis != null) {
+                    for (let i=0; i<emojis.length; i++) {
+                        let emoji = getEmoji(emojis[i]);
+                        if (emoji != undefined) {
+                            description = description.replace(emojis[i], getEmojiTag(emoji));
+                        }
+                    }
+                }
+
+                document.getElementById("box-" + user + "-" + repo).outerHTML = getPublicRepoTag(user, repo, description, languageColor, repoInfo.language, repoInfo.stargazers_count);
                 document.getElementById("delete-" + user + "-" + repo).onclick = () => {
                     removeRepo(watcher, user, repo, () => {
                         length--;
