@@ -19,7 +19,7 @@
     },
 
     "background": {
-        "service_worker": "src/domain/background/background.js"
+        "service_worker": "import.js"
     },
 
     "content_scripts": [
