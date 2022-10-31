@@ -1,22 +1,18 @@
-let getUserRepoList = (watcher, callback) => {
+let getUserRepoList = (callback) => {
     chrome.storage.sync.get(['history'], (result) => {
-        let infoMap = result.history != undefined ? new Map(Object.entries(result.history)) : new Map();
-        let userRepoInfoList = infoMap.get(watcher);
-        userRepoInfoList = userRepoInfoList != undefined ? userRepoInfoList : [];
-        callback(infoMap, userRepoInfoList);
+        let repoList = result.history != undefined ? result.history : [];
+        callback(repoList);
     });
 }
 
-let setUserRepoList = (infoMap, callback) => {
-    chrome.storage.sync.set({history: Object.fromEntries(infoMap)}, callback);
+let setUserRepoList = (repoList, callback) => {
+    chrome.storage.sync.set({history: repoList}, callback);
 }
 
-let removeRepo = (watcher, user, repo, callback) => {
-    getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
-        userRepoInfoList = userRepoInfoList.filter(repoInfo => repoInfo.repo != repo || repoInfo.user != user);
-
-        infoMap.set(watcher, userRepoInfoList);
-        setUserRepoList(infoMap, callback);
+let removeRepo = (user, repo, callback) => {
+    getUserRepoList((repoList) => {
+        repoList = repoList.filter(repoInfo => repoInfo.repo != repo || repoInfo.user != user);
+        setUserRepoList(repoList, callback);
     });
 }
 

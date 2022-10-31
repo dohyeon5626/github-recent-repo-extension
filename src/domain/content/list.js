@@ -1,19 +1,15 @@
-let metaTag = document.querySelector("meta[name=octolytics-actor-login]");
-if (metaTag != undefined) {
-    let button = getFeedButtonTagElement("History");
-    appendFeedLiTagElement(button);
-    let panel = getPanelTagElement();
-    applyFeedButtonClick();
-    let watcher = metaTag.content;
+let button = getFeedButtonTagElement("History");
+appendFeedLiTagElement(button);
+let panel = getPanelTagElement();
+applyFeedButtonClick();
 
-    getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
-        panel.innerHTML = getNoRenderingRepoListTag(userRepoInfoList);
-        document.querySelector("tab-container").appendChild(panel);
-        replaceNoRenderingRepoListTag(userRepoInfoList, watcher);
-        applyRepoHistorySearch(userRepoInfoList);
+getUserRepoList((repoList) => {
+    panel.innerHTML = getNoRenderingRepoListTag(repoList);
+    document.querySelector("tab-container").appendChild(panel);
+    replaceNoRenderingRepoListTag(repoList);
+    applyRepoHistorySearch(repoList);
 
-        if (userRepoInfoList.length != 0) {
-            applyClearButtonEvent(panel, watcher);
-        }
-    })
-}
+    if (repoList.length != 0) {
+        applyClearButtonEvent(panel);
+    }
+})

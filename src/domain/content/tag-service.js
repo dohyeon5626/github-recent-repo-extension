@@ -157,7 +157,7 @@ let getEmojiTag = (repoInfo) => `
         ${repoInfo.emoji}
     </g-emoji>`;
 
-let replaceNoRenderingRepoListTag = (userRepoInfoList, watcher) => {
+let replaceNoRenderingRepoListTag = (userRepoInfoList) => {
     let length = userRepoInfoList.length;
     let clearBox = document.getElementById("date-clear-box");
     for (let i=0; i<length; i++) {
@@ -179,7 +179,7 @@ let replaceNoRenderingRepoListTag = (userRepoInfoList, watcher) => {
 
                 document.getElementById("box-" + user + "-" + repo).outerHTML = getPublicRepoTag(user, repo, description, languageColor, repoInfo.language, repoInfo.stargazers_count);
                 document.getElementById("delete-" + user + "-" + repo).onclick = () => {
-                    removeRepo(watcher, user, repo, () => {
+                    removeRepo(user, repo, () => {
                         length--;
                         document.getElementById("box-" + user + "-" + repo).replaceWith("");
                         if (length == 0) {
@@ -199,11 +199,10 @@ let replaceNoRenderingRepoListTag = (userRepoInfoList, watcher) => {
     }
 }
 
-let applyClearButtonEvent = (panel, watcher) => {
+let applyClearButtonEvent = (panel) => {
     document.getElementById("clear-button").onclick = () => {
-        getUserRepoList(watcher, (infoMap, userRepoInfoList) => {
-            infoMap.set(watcher, []);
-            setUserRepoList(infoMap, () => {
+        getUserRepoList(() => {
+            setUserRepoList([], () => {
                 panel.innerHTML = "";
             });
         });
