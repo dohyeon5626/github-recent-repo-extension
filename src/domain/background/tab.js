@@ -1,8 +1,9 @@
 let registRepo = () => {
-    let info = location.href.split('/');
-    if (info.length >= 5) {
-        let user = info[3];
-        let repo = info[4].split((/[!,@,#,$,%,^,&,*,(,),+,?,>,<,~,₩]/g))[0];
+    let userInfo = document.querySelector("a.url.fn");
+    let repoInfo = document.querySelector("strong.mr-2.flex-self-stretch > a");
+    if (userInfo != undefined && repoInfo != undefined) {
+        let user = userInfo.textContent;
+        let repo = repoInfo.textContent;
 
         if (user != undefined && repo != undefined) {
             getUserRepoList((repoList) => {

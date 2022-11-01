@@ -1,12 +1,17 @@
-let info = location.href.split('/');
-let user = info[3];
-let repo = info[4].split((/[!,@,#,$,%,^,&,*,(,),+,?,>,<,~,₩]/g))[0];
+let userInfo = document.querySelector("a.url.fn");
+let repoInfo = document.querySelector("strong.mr-2.flex-self-stretch > a");
+if (userInfo != undefined && repoInfo != undefined) {
+    let user = userInfo.textContent;
+    let repo = repoInfo.textContent;
 
-getUserRepoList((repoList) => {
-    repoList = repoList.filter(repoInfo => repoInfo.repo != repo || repoInfo.user != user);
-    repoList.unshift({
-        user: user,
-        repo: repo
-    });
-    setUserRepoList(repoList.splice(0, 30));
-});
+    if (user != undefined && repo != undefined) {
+        getUserRepoList((repoList) => {
+            repoList = repoList.filter(repoInfo => repoInfo.repo != repo || repoInfo.user != user);
+            repoList.unshift({
+                user: user,
+                repo: repo
+            });
+            setUserRepoList(repoList.splice(0, 30));
+        });
+    }
+}
