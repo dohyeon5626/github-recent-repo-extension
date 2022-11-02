@@ -167,12 +167,14 @@ let replaceNoRenderingRepoListTag = (userRepoInfoList) => {
                 clearBox.style.display = "flex";
                 let languageColor = getColor(repoInfo.language);
                 let description = repoInfo.description;
-                let emojis = description.match(/:.*:/g);
-                if (emojis != null) {
-                    for (let i=0; i<emojis.length; i++) {
-                        let emoji = getEmoji(emojis[i]);
-                        if (emoji != undefined) {
-                            description = description.replace(emojis[i], getEmojiTag(emoji));
+                if (description != undefined) {
+                    let emojis = description.match(/:.*:/g);
+                    if (emojis != null) {
+                        for (let i=0; i<emojis.length; i++) {
+                            let emoji = getEmoji(emojis[i]);
+                            if (emoji != undefined) {
+                                description = description.replace(emojis[i], getEmojiTag(emoji));
+                            }
                         }
                     }
                 }

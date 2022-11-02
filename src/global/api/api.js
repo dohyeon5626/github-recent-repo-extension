@@ -20,10 +20,7 @@ let getRepoInfo = (user, repo, successCallback, failCallback) => {
                             fetch("https://api.github.com/repos/" + user + "/" + repo)
                                 .then((response) => response.json())
                                 .then((data) => {
-                                    if (data.message === "Not Found") {
-                                        failCallback();
-                                    }
-                                    else {
+                                    if (data.message === undefined) {
                                         chrome.runtime.sendMessage({
                                             action: "setRepoCache",
                                             user: user,
@@ -32,6 +29,9 @@ let getRepoInfo = (user, repo, successCallback, failCallback) => {
                                         }, () => {
                                             successCallback(data); 
                                         });
+                                    }
+                                    else {
+                                        failCallback();
                                     }
                                 });
                         }
