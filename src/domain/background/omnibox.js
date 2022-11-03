@@ -12,15 +12,6 @@ chrome.omnibox.onInputChanged.addListener(
                     )
                 }
             }
-            // if (repoSuggest.length < 9) {
-            //     let empthRepeat = 9 - repoSuggest.length;
-            //     for (let i=1; i<(empthRepeat + 1); i++) {
-            //         let value = " ".repeat(i);
-            //         repoSuggest.push(
-            //             {content: `https://github.com${value}`, description: value}
-            //         )
-            //     }
-            // }
             suggest(repoSuggest);
         })
     });
