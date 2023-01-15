@@ -1,7 +1,7 @@
 {
-    "name": "Recent Repo",
+    "name": "Github Recent Repo",
     "description": "Take a look at the repositories you've seen recently.",
-    "version": "2.0",
+    "version": "3.0",
     "manifest_version": 3,
 
     "permissions" : ["storage", "scripting"],
