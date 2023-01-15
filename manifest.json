@@ -16,6 +16,16 @@
 
     "omnibox": {"keyword": "repo"},
 
+    "commands" : {
+        "move-history": {
+            "suggested_key": {
+                "default": "Ctrl+B",
+                "mac": "Command+B"
+            },
+            "description": "Move recent repo history page"
+        }
+    },
+
     "action": {
         "default_popup": "src/domain/popup/popup.html"
     },

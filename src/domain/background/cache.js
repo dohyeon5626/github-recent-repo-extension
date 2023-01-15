@@ -25,3 +25,7 @@ chrome.runtime.onMessage.addListener(
         return true;
     }
 );
+
+let setFeed = (tabId, value) => {
+    feedMap.set(tabId, value);
+}
