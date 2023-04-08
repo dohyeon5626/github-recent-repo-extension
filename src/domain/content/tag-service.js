@@ -158,47 +158,49 @@ let getEmojiTag = (repoInfo) => `
     </g-emoji>`;
 
 let replaceNoRenderingRepoListTag = (userRepoInfoList) => {
-    let length = userRepoInfoList.length;
-    let clearBox = document.getElementById("date-clear-box");
-    for (let i=0; i<length; i++) {
-        let user = userRepoInfoList[i].user;
-        let repo = userRepoInfoList[i].repo;
-        getRepoInfo(user, repo, (repoInfo) => {
-                clearBox.style.display = "flex";
-                let languageColor = getColor(repoInfo.language);
-                let description = repoInfo.description;
-                if (description != undefined) {
-                    let emojis = description.match(/:.*:/g);
-                    if (emojis != null) {
-                        for (let i=0; i<emojis.length; i++) {
-                            let emoji = getEmoji(emojis[i]);
-                            if (emoji != undefined) {
-                                description = description.replace(emojis[i], getEmojiTag(emoji));
+    document.getElementById("feed-history").onclick = () => {
+        let length = userRepoInfoList.length;
+        let clearBox = document.getElementById("date-clear-box");
+        for (let i=0; i<length; i++) {
+            let user = userRepoInfoList[i].user;
+            let repo = userRepoInfoList[i].repo;
+            getRepoInfo(user, repo, (repoInfo) => {
+                    clearBox.style.display = "flex";
+                    let languageColor = getColor(repoInfo.language);
+                    let description = repoInfo.description;
+                    if (description != undefined) {
+                        let emojis = description.match(/:.*:/g);
+                        if (emojis != null) {
+                            for (let i=0; i<emojis.length; i++) {
+                                let emoji = getEmoji(emojis[i]);
+                                if (emoji != undefined) {
+                                    description = description.replace(emojis[i], getEmojiTag(emoji));
+                                }
                             }
                         }
                     }
-                }
 
-                document.getElementById("box-" + user + "-" + repo).outerHTML = getPublicRepoTag(user, repo, description, languageColor, repoInfo.language, repoInfo.stargazers_count);
-                document.getElementById("delete-" + user + "-" + repo).onclick = () => {
-                    removeRepo(user, repo, () => {
-                        length--;
-                        document.getElementById("box-" + user + "-" + repo).replaceWith("");
-                        if (length == 0) {
-                            document.getElementById("date-clear-box").replaceWith("");
-                        }
-                    });
+                    document.getElementById("box-" + user + "-" + repo).outerHTML = getPublicRepoTag(user, repo, description, languageColor, repoInfo.language, repoInfo.stargazers_count);
+                    document.getElementById("delete-" + user + "-" + repo).onclick = () => {
+                        removeRepo(user, repo, () => {
+                            length--;
+                            document.getElementById("box-" + user + "-" + repo).replaceWith("");
+                            if (length == 0) {
+                                document.getElementById("date-clear-box").replaceWith("");
+                            }
+                        });
+                    }
+                },
+                () => {
+                    length--;
+                    document.getElementById("box-" + user + "-" + repo).outerHTML = "";
+                    if (length == 0) {
+                        document.getElementById("date-clear-box").replaceWith("");
+                    }
                 }
-            },
-            () => {
-                length--;
-                document.getElementById("box-" + user + "-" + repo).outerHTML = "";
-                if (length == 0) {
-                    document.getElementById("date-clear-box").replaceWith("");
-                }
-            }
-        );
-    }
+            );
+        }  
+    };
 }
 
 let applyClearButtonEvent = (panel) => {
