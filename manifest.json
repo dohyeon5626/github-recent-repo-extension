@@ -19,8 +19,8 @@
     "commands" : {
         "move-history": {
             "suggested_key": {
-                "default": "Ctrl+B",
-                "mac": "Command+B"
+                "default": "Ctrl+Shift+U",
+                "mac": "Command+Shift+U"
             },
             "description": "Move recent repo history page"
         }
